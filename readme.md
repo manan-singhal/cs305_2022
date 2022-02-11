@@ -1,5 +1,7 @@
 This code works on Sakila DB where insert, update and delete works on all the tables while selectOne and selectMany only works through Model class created. I have added city class to my model folder and checked my code for selectOne and selectMany only on City table of sakila DB.
 
+Note: Please add queries.xml file path to "XmlExtractor.java".
+
 Unit Test execution:-
 
 String queryId = You will provide an id to execute which is present on queries.xml file.
