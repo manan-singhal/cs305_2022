@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<queries>
+	<sql id="command_id1" paramType="org.foo.Bar">
+		<![CDATA[
+		SELECT * FROM city where city_id=${var1} AND city=${var2};
+		]]>
+	</sql>
+	<sql id="command_id2" paramType="org.foo.Bar">
+		<![CDATA[
+		SELECT * FROM city where city=${var1} AND country_id=${var2};
+		]]>
+	</sql>
+	<sql id="command_id3" paramType="org.foo.Bar">
+		<![CDATA[
+		INSERT INTO city VALUES(${var1}, ${var2}, ${var3}, ${var4});
+		]]>
+	</sql>
+	<sql id="command_id4" paramType="org.foo.Bar">
+		<![CDATA[
+		Update city set city=${var1} where city_id=${var2} AND country_id=${var3};
+		]]>
+	</sql>
+	<sql id="command_id5" paramType="org.foo.Bar">
+		<![CDATA[
+		Delete from city where city_id=${var1} AND city=${var2};
+		]]>
+	</sql>
+</queries>
