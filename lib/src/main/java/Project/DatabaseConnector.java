@@ -14,7 +14,7 @@ import Model.City;
 
 public class DatabaseConnector implements SqlRunner {
     
-    static HashMap<String, String> hashMap = XmlExtractor.extractXml();
+    static HashMap<String, String> hashMap = XmlExtractor.getCommandsFromXmlFile();
 
     public static void main(String args[]) {
 
@@ -35,7 +35,8 @@ public class DatabaseConnector implements SqlRunner {
                             "  " + resultSet.getString(3));
                     }
                 }
-                else if (crudOperator.equals("INSERT") || crudOperator.equals("DELETE") || crudOperator.equals("UPDATE")) {
+                else if (crudOperator.equals("INSERT") || crudOperator.equals("DELETE") || 
+                    crudOperator.equals("UPDATE")) {
                     int rowsAffected = statement.executeUpdate(set.getValue());
                     System.out.println(crudOperator + ": Rows affected:- " + rowsAffected);
                 }
@@ -95,7 +96,6 @@ public class DatabaseConnector implements SqlRunner {
             "jdbc:mysql://localhost:3306/sakila?characterEncoding=latin1","root","Manans@321");  
             Statement statement = connection.createStatement();
             City x=new City();
-            hashMap = XmlExtractor.extractXml();
             for (Entry<String, String> set : hashMap.entrySet()) {
                 if (queryId.equals(set.getKey())) {
                     String var = set.getValue();
@@ -185,7 +185,6 @@ public class DatabaseConnector implements SqlRunner {
             "jdbc:mysql://localhost:3306/sakila?characterEncoding=latin1","root","Manans@321");  
             Statement statement = connection.createStatement();
             List<City> x= new ArrayList<City>();
-            hashMap = XmlExtractor.extractXml();
             for (Entry<String, String> set : hashMap.entrySet()) {
                 if (queryId.equals(set.getKey())) {
                     String var = set.getValue();
@@ -232,7 +231,6 @@ public class DatabaseConnector implements SqlRunner {
             "jdbc:mysql://localhost:3306/sakila?characterEncoding=latin1","root","Manans@321");  
             Statement statement = connection.createStatement();
             int ra = 0;
-            hashMap = XmlExtractor.extractXml();
             for (Entry<String, String> set : hashMap.entrySet()) {
                 if (queryId.equals(set.getKey())) {
                     String var = set.getValue();
@@ -271,7 +269,6 @@ public class DatabaseConnector implements SqlRunner {
             "jdbc:mysql://localhost:3306/sakila?characterEncoding=latin1","root","Manans@321");  
             Statement statement = connection.createStatement();
             int ra = 0;
-            hashMap = XmlExtractor.extractXml();
             for (Entry<String, String> set : hashMap.entrySet()) {
                 if (queryId.equals(set.getKey())) {
                     String var = set.getValue();
@@ -338,7 +335,6 @@ public class DatabaseConnector implements SqlRunner {
             "jdbc:mysql://localhost:3306/sakila?characterEncoding=latin1","root","Manans@321");  
             Statement statement = connection.createStatement();
             int ra = 0;
-            hashMap = XmlExtractor.extractXml();
             for (Entry<String, String> set : hashMap.entrySet()) {
                 if (queryId.equals(set.getKey())) {
                     String var = set.getValue();
@@ -366,6 +362,42 @@ public class DatabaseConnector implements SqlRunner {
         catch(Exception e) {
             System.out.println(e);
             return 0;
+        }
+    }
+
+    private String getCommandInStringFormat (String queryId, Object queryParam) {
+        try {  
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection(     
+            "jdbc:mysql://localhost:3306/sakila?characterEncoding=latin1","root","Manans@321");  
+            Statement statement = connection.createStatement();
+            String xmlCommand = "";
+            for (Entry<String, String> set : hashMap.entrySet()) {
+                if (queryId.equals(set.getKey())) {
+                    xmlCommand = set.getValue();
+                    String[] queryParamList = ((String) queryParam).split(",");
+                    for (int i=0; i<queryParamList.length; i++) {
+                        queryParamList[i] = queryParamList[i].trim();
+                    }
+                    
+                    int count = 0;
+                    int checkBrackets = xmlCommand.indexOf("${");
+                    String n = "";
+					while (checkBrackets != -1) {
+                        n = xmlCommand.substring(0, xmlCommand.indexOf("${")) + queryParamList[count] + xmlCommand.substring(xmlCommand.indexOf("}")+1, xmlCommand.length());
+						checkBrackets = n.indexOf("${");
+                        xmlCommand=n;
+                        count++;
+					}
+                    
+                }
+            }
+            connection.close();
+            return xmlCommand;
+             
+        }
+        catch(Exception e) {
+            return null;
         }
     }
 }
