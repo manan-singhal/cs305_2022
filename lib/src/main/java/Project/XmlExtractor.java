@@ -16,6 +16,7 @@ public class XmlExtractor {
 
     public static HashMap<String, String> getCommandsFromXmlFile() {
         try {
+			//Added .xml file path
 			File file = new File("E:/VS Code Projects/cs305_2022/queries.xml");
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -23,12 +24,15 @@ public class XmlExtractor {
 			document.getDocumentElement().normalize();
 
 			String nodeStringToSearch = "<" + document.getDocumentElement().getNodeName() + ">";
+
+			//Converting document to string
 			String fileString = convertStringFromDocument(document);
 			fileString = fileString.substring(
 				fileString.indexOf(nodeStringToSearch) + nodeStringToSearch.length(), 
 				fileString.length());
 			fileString = fileString.substring(0, fileString.length() - nodeStringToSearch.length());
 
+			//Storing id and command corresponding to hashmap
 			HashMap<String, String> hashMap = new HashMap<>();
 			int index = fileString.indexOf("<![CDATA[");
 			while (index != -1) {

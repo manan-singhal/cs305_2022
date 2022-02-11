@@ -59,6 +59,7 @@ public class DatabaseConnector implements SqlRunner {
             Connection connection = DriverManager.getConnection(     
             "jdbc:mysql://localhost:3306/sakila?characterEncoding=latin1","root","Manans@321");  
             Statement statement = connection.createStatement();
+            //Create a instance of city class to return
             City city = new City();
             ResultSet resultSet = statement.executeQuery(getCommandInStringFormat(queryId, queryParam));
             resultSet.next();
@@ -83,6 +84,7 @@ public class DatabaseConnector implements SqlRunner {
             Connection connection = DriverManager.getConnection(     
             "jdbc:mysql://localhost:3306/sakila?characterEncoding=latin1","root","Manans@321");  
             Statement statement = connection.createStatement();
+            //Create a instance of list of city class to return
             List<City> cityList = new ArrayList<City>();
             ResultSet resultSet = statement.executeQuery(getCommandInStringFormat(queryId, queryParam));
             while (resultSet.next()) {
@@ -109,6 +111,7 @@ public class DatabaseConnector implements SqlRunner {
             Connection connection = DriverManager.getConnection(     
             "jdbc:mysql://localhost:3306/sakila?characterEncoding=latin1","root","Manans@321");  
             Statement statement = connection.createStatement();
+            //return rows affected class
             int rowsAffected = statement.executeUpdate(getCommandInStringFormat(queryId, queryParam));
             connection.close();
             return rowsAffected;
@@ -126,6 +129,7 @@ public class DatabaseConnector implements SqlRunner {
             Connection connection = DriverManager.getConnection(     
             "jdbc:mysql://localhost:3306/sakila?characterEncoding=latin1","root","Manans@321");  
             Statement statement = connection.createStatement();
+            //return rows affected class
             int rowsAffected = statement.executeUpdate(getCommandInStringFormat(queryId, queryParam));
             connection.close();
             return rowsAffected;
@@ -142,6 +146,7 @@ public class DatabaseConnector implements SqlRunner {
             Connection connection = DriverManager.getConnection(     
             "jdbc:mysql://localhost:3306/sakila?characterEncoding=latin1","root","Manans@321");  
             Statement statement = connection.createStatement();
+            //return rows affected class
             int rowsAffected = statement.executeUpdate(getCommandInStringFormat(queryId, queryParam));
             connection.close();
             return rowsAffected;
@@ -151,6 +156,7 @@ public class DatabaseConnector implements SqlRunner {
         }
     }
 
+    //Returning a proper query after replacing with a variable
     private String getCommandInStringFormat (String queryId, Object queryParam) {
         String xmlCommand = "";
         for (Entry<String, String> set : hashMap.entrySet()) {
