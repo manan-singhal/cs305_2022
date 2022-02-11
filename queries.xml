@@ -25,4 +25,9 @@
 		Delete from city where city_id=${var1} AND city=${var2};
 		]]>
 	</sql>
+	<sql id="command_id6" paramType="org.foo.Bar">
+		<![CDATA[
+		SELECT * FROM city where country_id=${var1} AND city=${var2};
+		]]>
+	</sql>
 </queries>

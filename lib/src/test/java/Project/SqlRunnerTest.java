@@ -13,6 +13,9 @@ public class SqlRunnerTest {
     void selectOne() {
         City city = (City) databaseConnector.selectOne("command_id1", "596, \"Zaria\"", City.class);
         assertEquals(city.country_id, 69);
+
+        City city2 = (City) databaseConnector.selectOne("command_id6", "102, \"York\"", City.class);
+        assertEquals(city2.city_id, 589);
     }
     
     @SuppressWarnings("unchecked")
@@ -25,7 +28,7 @@ public class SqlRunnerTest {
 
     @Test
     void update() {
-        int rowsAffected = databaseConnector.update("command_id4", "\"Jaipur\", 576, 8");
+        int rowsAffected = databaseConnector.update("command_id4", "\"Jaipur1\", 576, 8");
         assertEquals(rowsAffected, 1);
     }
 

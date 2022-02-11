@@ -1,14 +1,14 @@
 package Project;
 
-import java.sql.Connection;
-
-import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map.Entry;
+
+import java.sql.Connection;
+import java.sql.Statement;
+import java.util.List;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.sql.DriverManager;
 
 import Model.City;
 
@@ -22,7 +22,7 @@ public class DatabaseConnector implements SqlRunner {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection(     
             "jdbc:mysql://localhost:3306/sakila?characterEncoding=latin1","root","Manans@321");  
-            Statement statement = connection.createStatement();
+            //Statement statement = connection.createStatement();
             for (Entry<String, String> set : hashMap.entrySet()) {
                 System.out.println(set.getKey() + ":: " + set.getValue());
 
@@ -129,7 +129,6 @@ public class DatabaseConnector implements SqlRunner {
             int rowsAffected = statement.executeUpdate(getCommandInStringFormat(queryId, queryParam));
             connection.close();
             return rowsAffected;
-             
         }
         catch(Exception e) {
             return 0;
@@ -146,7 +145,6 @@ public class DatabaseConnector implements SqlRunner {
             int rowsAffected = statement.executeUpdate(getCommandInStringFormat(queryId, queryParam));
             connection.close();
             return rowsAffected;
-             
         }
         catch(Exception e) {
             return 0;

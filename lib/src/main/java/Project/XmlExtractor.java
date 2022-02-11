@@ -1,39 +1,21 @@
 package Project;
 
-import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.StringWriter;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
+import java.io.File;
 import javax.xml.transform.dom.DOMSource;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.TransformerException;
+import java.util.HashMap;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
-import java.io.File;
-import java.io.StringWriter;
-import java.util.HashMap;
 
 public class XmlExtractor {
 
-    public static String convertStringFromDocument(Document document) {
-		try {
-			DOMSource domSource = new DOMSource(document);
-			StringWriter stringWriter = new StringWriter();
-			StreamResult streamResult = new StreamResult(stringWriter);
-			TransformerFactory transformerFactory = TransformerFactory.newInstance();
-			Transformer transformer = transformerFactory.newTransformer();
-			transformer.transform(domSource, streamResult);
-			return stringWriter.toString();
-		}
-		catch(TransformerException ex) {
-			ex.printStackTrace();
-			return null;
-		}
-	}
-
     public static HashMap<String, String> getCommandsFromXmlFile() {
         try {
-            HashMap<String, String> hashMap = new HashMap<>();
-
 			File file = new File("E:/VS Code Projects/cs305_2022/queries.xml");
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -45,20 +27,18 @@ public class XmlExtractor {
 			fileString = fileString.substring(
 				fileString.indexOf(nodeStringToSearch) + nodeStringToSearch.length(), 
 				fileString.length());
-			fileString = fileString.substring(0, 
-				fileString.length() - nodeStringToSearch.length());
+			fileString = fileString.substring(0, fileString.length() - nodeStringToSearch.length());
 
-			String cData = "<![CDATA[";
-			String endCData = "]]>";
-			int index = fileString.indexOf(cData);
+			HashMap<String, String> hashMap = new HashMap<>();
+			int index = fileString.indexOf("<![CDATA[");
 			while (index != -1) {
                 String idOfACommand = fileString.substring(fileString.indexOf("sql id=") + 8, 
                     fileString.indexOf("\" paramType"));
-				fileString = fileString.substring(index + cData.length(), 
+				fileString = fileString.substring(index + 9, 
                     fileString.length());
-				String command = fileString.substring(0, fileString.indexOf(endCData));
+				String command = fileString.substring(0, fileString.indexOf("]]>"));
                 hashMap.put(idOfACommand.trim(), command.trim());
-				index = fileString.indexOf(cData);
+				index = fileString.indexOf("<![CDATA[");
 			}
 
 			return hashMap;
@@ -67,4 +47,21 @@ public class XmlExtractor {
             return null;
 		}
     }
+
+	public static String convertStringFromDocument(Document document) {
+		StringWriter stringWriter;
+		StreamResult streamResult;
+		TransformerFactory transformerFactory;
+		Transformer transformer;
+		try {
+			stringWriter = new StringWriter();
+			streamResult = new StreamResult(stringWriter);
+			transformerFactory = TransformerFactory.newInstance();
+			transformer = transformerFactory.newTransformer();
+			transformer.transform(new DOMSource(document), streamResult);
+			return stringWriter.toString();
+		}
+		catch(TransformerException ex) {}
+		return null;
+	}
 }
